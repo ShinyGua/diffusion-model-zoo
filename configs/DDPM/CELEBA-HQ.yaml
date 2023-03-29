@@ -1,0 +1,40 @@
+data:
+  data_root_path: "/datasets"
+  dataset_name: CelebA-HQ
+  img_size: 256
+
+model:
+  batch_size: 64
+  ddpm:
+    target: "model.DDPM.diffusion.Model"
+    type: "simple"
+    in_channels: 3
+    out_ch: 3
+    ch: 128
+    ch_mult: [1, 1, 2, 2, 4, 4]
+    num_res_blocks: 2
+    attn_resolutions: [16, ]
+    dropout: 0.0
+    var_type: fixedlarge
+    ema_rate: 0.9999
+    ema: True
+    resamp_with_conv: True
+    initial_checkpoint: "ckpt/CELEBA-HQ.ckpt"
+    use_checkpoint: True
+
+dm:
+  schedule_name: linear
+  num_diffusion_timesteps: 1000
+  sample_timesteps: 1000
+  beta_start: 0.0001
+  beta_end: 0.02
+
+train:
+  iteration: 60000
+  warmup_lr_rate: 0.1
+  min_lr_rate: 0.25
+
+workers: 8
+seed: 618
+log_freq: 50
+save_freq: 1000

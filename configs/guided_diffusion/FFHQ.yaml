@@ -1,0 +1,51 @@
+data:
+  data_root_path: "/datasets"
+  dataset_name: FFHQ
+  img_size: 256
+
+model:
+  batch_size: 64
+  ddpm:
+    target: "model.guided_diffusion.unet.UNetModel"
+    type: "simple"
+    in_channels: 3
+    out_ch: 6
+    ch: 256
+    ch_mult: [ 1, 1, 2, 2, 4, 4 ]
+    num_res_blocks: 2
+    attn_resolutions: [ 32, 16, 8 ]
+    dropout: 0.1
+    num_heads: 4
+    num_head_channels: 64
+    var_type: fixedlarge
+    ema_rate: 0.9999
+    ema: True
+    resamp_with_conv: True
+    initial_checkpoint: "ckpt/ffhq.pt"
+    num_classes: None
+    use_checkpoint: True
+    num_heads_upsample: -1
+    use_scale_shift_norm: True
+    resblock_updown: True
+    use_new_attention_order: False
+
+dm:
+  schedule_name: linear
+  num_diffusion_timesteps: 1000
+  sample_timesteps: 1000
+  beta_start: 0.0001
+  beta_end: 0.02
+
+train:
+  iteration: 500000
+  lr: 1e-4
+
+opt:
+  betas: (0.9, 0.999)
+  weight_decay: 0.0
+  clip_grad: 1.0
+
+workers: 8
+seed: 618
+log_freq: 100
+save_freq: 5000
